@@ -11,6 +11,13 @@ impl Vector {
     pub fn new(x: f64, y: f64, z: f64) -> Vector {
         Vector { x: x, y: y, z: z, w: 0.0 }
     }
+
+    pub fn length(self) -> f64 {
+        (self.x * self.x +
+         self.y * self.y +
+         self.z * self.z).sqrt()
+
+    }
 }
 
 impl Add for Vector {
@@ -102,5 +109,13 @@ mod tests {
         assert_eq!(v2.x, x * scalar);
         assert_eq!(v2.y, y * scalar);
         assert_eq!(v2.z, z * scalar);
+    }
+
+    #[test]
+    fn test_length() {
+        let (x, y, z, v) = random_vector();
+        let length = (x * x + y * y + z * z).sqrt();
+
+        assert_eq!(v.length(), length);
     }
 }

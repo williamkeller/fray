@@ -1,5 +1,6 @@
 use std::ops::{Add, Sub, Mul};
 
+#[derive(Copy, Clone)]
 pub struct Vector {
     pub x: f64,
     pub y: f64,
@@ -16,7 +17,12 @@ impl Vector {
         (self.x * self.x +
          self.y * self.y +
          self.z * self.z).sqrt()
+    }
 
+    pub fn normalize(self) -> Vector {
+        let length = self.length();
+
+        Vector::new(self.x / length, self.y / length, self.z / length)
     }
 }
 
@@ -24,9 +30,7 @@ impl Add for Vector {
      type Output = Vector;
 
      fn add(self, rhs: Vector) -> Vector {
-        Vector::new(self.x + rhs.x,
-                    self.y + rhs.y,
-                    self.z + rhs.z)
+        Vector::new(self.x + rhs.x, self.y + rhs.y, self.z + rhs.z)
     }
 }
 
@@ -34,9 +38,7 @@ impl Sub for Vector {
      type Output = Vector;
 
      fn sub(self, rhs: Vector) -> Vector {
-        Vector::new(self.x - rhs.x,
-                    self.y - rhs.y,
-                    self.z - rhs.z)
+        Vector::new(self.x - rhs.x, self.y - rhs.y, self.z - rhs.z)
     }
 }
 
@@ -44,9 +46,7 @@ impl Mul<f64> for Vector {
      type Output = Vector;
 
      fn mul(self, rhs: f64) -> Vector {
-        Vector::new(self.x * rhs,
-                    self.y * rhs,
-                    self.z * rhs)
+        Vector::new(self.x * rhs, self.y * rhs, self.z * rhs)
     }
 }
 
@@ -117,5 +117,16 @@ mod tests {
         let length = (x * x + y * y + z * z).sqrt();
 
         assert_eq!(v.length(), length);
+    }
+
+    #[test]
+    fn test_normalize() {
+        let v1 = Vector::new(4.0, 0.0, 0.0);
+        let v2 = v1.normalize();
+
+        assert_eq!(v2.x, 1.0);
+        assert_eq!(v2.y, 0.0);
+        assert_eq!(v2.z, 0.0);
+        assert_eq!(v2.length(), 1.0);
     }
 }
